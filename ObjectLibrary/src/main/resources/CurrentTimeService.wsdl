@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="CurrentTimeService" targetNamespace="http://artspb.me/cts"
+                  xmlns:tns="http://artspb.me/cts" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://artspb.me/cts">
+            <xsd:element name="timeZoneId" nillable="true" type="xsd:string"/>
+            <xsd:element name="currentTime" type="xsd:dateTime"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="getCurrentTimeMsg">
+        <wsdl:part element="tns:timeZoneId" name="timeZoneId"/>
+    </wsdl:message>
+    <wsdl:message name="currentTimeMsg">
+        <wsdl:part element="tns:currentTime" name="currentTime"/>
+    </wsdl:message>
+
+    <wsdl:portType name="CurrentTimeService">
+        <wsdl:operation name="getCurrentTime">
+            <wsdl:input message="tns:getCurrentTimeMsg" name="getCurrentTime"/>
+            <wsdl:output message="tns:currentTimeMsg" name="currentTime"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="CurrentTimeService_HttpBinding" type="tns:CurrentTimeService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="getCurrentTime">
+            <soap:operation soapAction="http://artspb.me/cts" style="document"/>
+            <wsdl:input name="getCurrentTime">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="currentTime">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="CurrentTimeService_HttpService">
+        <wsdl:port binding="tns:CurrentTimeService_HttpBinding" name="CurrentTimeService_HttpPort">
+            <soap:address location="http://localhost:8080/YetAnotherService/service/currentTimeService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

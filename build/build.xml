@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<project name="BuildObject">
+
+    <property name="cxf.home" value="/home/art/tools/apache-cxf-2.5.2"/>
+
+    <path id="cxf.classpath">
+        <fileset dir="${cxf.home}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="cxfWSDLToJava">
+        <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
+            <arg value="-verbose"/>
+            <arg value="-d"/>
+            <arg value="../ObjectLibrary/src/main/java"/>
+            <arg value="../ObjectLibrary/src/main/resources/CurrentTimeService.wsdl"/>
+            <classpath>
+                <path refid="cxf.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="regenerate.object.library">
+        <delete dir="../ObjectLibrary/src/main/java"/>
+        <antcall target="cxfWSDLToJava"/>
+    </target>
+
+</project>
